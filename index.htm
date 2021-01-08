@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+    <title>Flappy Bird</title>
+</head>
+
+<body style = "height: 100vh; background: #111; text-align:center;">
+    <h1>Welcome :) , To Flappy Bird Game !</h1>
+    <canvas id="c" width="400" height="400"></canvas>
+    <script>
+        
+       
+        context = c.getContext('2d')//getting the context of the game
+        const bird = new Image();
+        
+    
+        bird.src = "bird.png";
+        birdX = birdDY = score = bestScore = time = bestTime =  0;
+        birdY = pipeGap =  200;
+        birdGravity =  0.5
+        
+        interval = birdSize = pipeWidth = pipeBottomY =  24 // 1000 / 24 == 43 FS every 24 millisecond we draw the canvas which is very fast
+        canvasSize = pipeX =  400;
+        c.onclick = () => (birdDY = 9)
+        setInterval(()=>{
+            context.fillStyle = "skyblue"
+            context.fillRect(0 , 0 , canvasSize , canvasSize)
+            birdY -= birdDY -= birdGravity
+            context.drawImage(bird , birdX , birdY , birdSize * (524/374), birdSize)
+            context.fillStyle = "green"
+            context.fillRect(pipeX , 0 , pipeWidth , pipeBottomY )
+            context.fillRect(pipeX , pipeBottomY + pipeGap , pipeWidth , canvasSize )
+            pipeX -= 8
+            context.fillStyle = "black"
+            bestScore = bestScore < score ? score : bestScore
+            
+            context.fillText("Score: " + Math.round(score / 10) , 9 , 25)
+            context.fillText("Best Score: " + Math.round(bestScore / 10) , 9  , 40 )
+            context.fillText("Time: " + Math.round((time++ / 24000) * 400) + " sec"  , 9 , 55)
+            
+            
+            if((birdY > canvasSize || birdY < pipeBottomY || birdY > pipeBottomY + pipeGap)  && (pipeX < birdSize  * (524/274)) ) {
+                birdY = 200
+                birdDY = 0
+                pipeX = canvasSize
+                score = 0
+            }
+            if (!(birdY > canvasSize || birdY < pipeBottomY || birdY > pipeBottomY + pipeGap)  && (pipeX < birdSize  * (524/274)) ){
+                score++
+            }
+            if(pipeX < -pipeWidth) {
+                pipeX = canvasSize 
+                pipeBottomY = pipeGap * Math.random()
+
+            }
+        } , interval)
+
+        
+        
+
+    </script>
+    <p>Happy Gaming</p>
+    <footer id="date">Programmed with :) - <a target = "_blank" href="https://bit.ly/KINFISHTECH">KINFE MICHAEL TARIKU</a> </footer>
+</body>
+</html>
